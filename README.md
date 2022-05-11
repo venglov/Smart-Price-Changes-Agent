@@ -1,4 +1,4 @@
-# **Smart Gas Usage Agent**
+# **Smart Price Changes Agent**
 
 ---
 
