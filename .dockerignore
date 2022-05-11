@@ -1,0 +1,11 @@
+node_modules
+dist
+forta.config.json
+research
+test
+main.db
+test.db
+static
+__pycache__
+.pytest_cache
+venv
