@@ -81,10 +81,7 @@ async def analyze_transaction(transaction_event: forta_agent.transaction_event.T
     future = db_utils.get_future()
 
     # Find swap events in the transaction
-    print("test")
-    print(transaction_event.logs[0])
     for event in transaction_event.filter_log(json.dumps(swap_abi)):
-        print("i am inside")
 
         # add the pool to the database if we didn't know it yet
         if event.address not in list(known_pools.keys()):
