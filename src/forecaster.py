@@ -34,5 +34,5 @@ async def forecast(protocol: str):
     await future_table.delete_row_by_contract(protocol)
     for index, row in forecast_rows.iterrows():
         await future_table.paste_row(
-            {'pool_contract': protocol, 'timestamp': int(row['ds'].timestamp()), 'price': int(row['yhat']),
-             'price_lower': int(row['yhat_lower']), 'price_upper': int(row['yhat_upper'])})
+            {'pool_contract': protocol, 'timestamp': int(row['ds'].timestamp()), 'price': row['yhat'],
+             'price_lower': row['yhat_lower'], 'price_upper': row['yhat_upper']})

@@ -158,7 +158,7 @@ async def analyze_transaction(transaction_event: forta_agent.transaction_event.T
                       f'INFO: Excepted price lower: {future_row.price_lower}\n'
                       f'INFO: Excepted price: {future_row.price}')
 
-            if error > 4 * uncertainty and critical_enable:
+            if error > 4 * uncertainty + 0.05 and critical_enable:
                 pool = await pools.get_row_by_criteria({'pool_contract': event.address})
                 name0 = get_token_name(Web3.toChecksumAddress(pool.token0), erc20_abi, web3)
                 name1 = get_token_name(Web3.toChecksumAddress(pool.token1), erc20_abi, web3)
@@ -166,7 +166,7 @@ async def analyze_transaction(transaction_event: forta_agent.transaction_event.T
                 findings.append(SmartPriceChangesFindings.critical(protocols, transaction_event.to, event.address,
                                                                    future_row.price,
                                                                    price, transaction_event.hash, name0, name1))
-            elif error > 3 * uncertainty and high_enable:
+            elif error > 3 * uncertainty + 0.05 and high_enable:
                 pool = await pools.get_row_by_criteria({'pool_contract': event.address})
                 name0 = get_token_name(Web3.toChecksumAddress(pool.token0), erc20_abi, web3)
                 name1 = get_token_name(Web3.toChecksumAddress(pool.token1), erc20_abi, web3)
@@ -174,7 +174,7 @@ async def analyze_transaction(transaction_event: forta_agent.transaction_event.T
                 findings.append(SmartPriceChangesFindings.high(protocols, transaction_event.to, event.address,
                                                                future_row.price,
                                                                price, transaction_event.hash, name0, name1))
-            elif error > 2 * uncertainty and medium_enable:
+            elif error > 2 * uncertainty + 0.05 and medium_enable:
                 pool = await pools.get_row_by_criteria({'pool_contract': event.address})
                 name0 = get_token_name(Web3.toChecksumAddress(pool.token0), erc20_abi, web3)
                 name1 = get_token_name(Web3.toChecksumAddress(pool.token1), erc20_abi, web3)
