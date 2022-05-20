@@ -104,8 +104,13 @@ async def analyze_transaction(transaction_event: forta_agent.transaction_event.T
         amount1 = abs(extract_argument(event, "amount1"))
 
         # calculate prices
-        price0 = amount0 / amount1
-        price1 = amount1 / amount0
+        try:
+            price0 = amount0 / amount1
+            price1 = amount1 / amount0
+        except Exception as e:
+            if debug_logs_enabled:
+                print(e)
+                continue
 
         # for the forecasting purposes we prefer big values but not something like 0.0000....00001
         price = price0 if price0 > price1 else price1
