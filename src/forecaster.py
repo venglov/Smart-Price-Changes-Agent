@@ -22,6 +22,9 @@ async def forecast(protocol: str):
     df['timestamp'] = pd.to_datetime(df['timestamp'], unit='s')
     df = df.set_index('timestamp').resample('Min').mean().reset_index()
 
+    if df['price'].count() < 2:
+        return
+
     train = df.reset_index()[['timestamp', 'price']].rename({'timestamp': 'ds', 'price': 'y'},
                                                             axis='columns')
 

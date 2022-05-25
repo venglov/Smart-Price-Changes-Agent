@@ -25,10 +25,14 @@ protocols = get_protocols_by_chain(chain_id)
 with open("./src/abi/pool_abi.json", 'r') as abi_file:  # get abi from the file
     pool_abi = json.load(abi_file)
 
+with open("./src/abi/pool_v2_abi.json", 'r') as abi_v2_file:  # get abi from the file
+    pool_v2_abi = json.load(abi_v2_file)
+
 with open("./src/abi/token_abi.json", 'r') as abi_file:  # get abi from the file
     erc20_abi = json.load(abi_file)
 
 swap_abi = next((x for x in pool_abi if x.get('name', "") == "Swap"), None)
+swap_v2_abi = next((x for x in pool_v2_abi if x.get('name', "") == "Swap"), None)
 
 
 async def my_initialize(block_event: forta_agent.block_event.BlockEvent):
@@ -81,7 +85,8 @@ async def analyze_transaction(transaction_event: forta_agent.transaction_event.T
     future = db_utils.get_future()
 
     # Find swap events in the transaction
-    for event in transaction_event.filter_log(json.dumps(swap_abi)):
+    for event in [*transaction_event.filter_log(json.dumps(swap_abi)),
+                  *transaction_event.filter_log(json.dumps(swap_v2_abi))]:
 
         # add the pool to the database if we didn't know it yet
         if event.address not in list(known_pools.keys()):
@@ -100,8 +105,20 @@ async def analyze_transaction(transaction_event: forta_agent.transaction_event.T
             await pools.paste_row({'pool_contract': event.address, 'token0': token0, 'token1': token1})
 
         # get the amounts of the swap
-        amount0 = abs(extract_argument(event, "amount0"))
-        amount1 = abs(extract_argument(event, "amount1"))
+        amount0 = extract_argument(event, "amount0")
+        amount1 = extract_argument(event, "amount1")
+
+        if not amount0 and not amount1:
+            amount0In = abs(extract_argument(event, "amount0In"))
+            amount1In = abs(extract_argument(event, "amount1In"))
+            amount0Out = abs(extract_argument(event, "amount0Out"))
+            amount1Out = abs(extract_argument(event, "amount1Out"))
+
+            amount0 = amount0In if amount0In != 0 else amount0Out
+            amount1 = amount1In if amount1In != 0 else amount1Out
+
+        amount0 = abs(amount0)
+        amount1 = abs(amount1)
 
         # calculate prices
         try:
@@ -149,10 +166,10 @@ async def analyze_transaction(transaction_event: forta_agent.transaction_event.T
                         future_row = fr
                         break
 
-        # we need to determine how volatile the protocol is
-        uncertainty = (future_row.price_upper - future_row.price_lower) if future_row else None
-
         if future_row:
+
+            # we need to determine how volatile the protocol is
+            uncertainty = (future_row.price_upper - future_row.price_lower) if future_row else None
 
             error = abs(price - future_row.price)
 
