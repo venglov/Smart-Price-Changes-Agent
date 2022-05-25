@@ -127,7 +127,7 @@ async def analyze_transaction(transaction_event: forta_agent.transaction_event.T
         except Exception as e:
             if debug_logs_enabled:
                 print(e)
-                continue
+            continue
 
         # for the forecasting purposes we prefer big values but not something like 0.0000....00001
         price = price0 if price0 > price1 else price1
