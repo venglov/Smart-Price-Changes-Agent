@@ -28,7 +28,7 @@ async def forecast(protocol: str):
     train = df.reset_index()[['timestamp', 'price']].rename({'timestamp': 'ds', 'price': 'y'},
                                                             axis='columns')
 
-    m = Prophet(changepoint_range=1)
+    m = Prophet(changepoint_range=1, changepoint_prior_scale=0.5, interval_width=0.99)
     m.fit(train)
     future = m.make_future_dataframe(periods=30, freq='Min')
 
