@@ -10,6 +10,8 @@ async def wrapped_models(Base: declarative_base):
         timestamp = Column(Integer)
         block = Column(Integer)
         pool_contract = Column(String)
+        token0 = Column(String)
+        token1 = Column(String)
         amount0 = Column(String)
         amount1 = Column(String)
         price = Column(Float)
@@ -26,6 +28,8 @@ async def wrapped_models(Base: declarative_base):
         __tablename__ = 'future'
         id = Column(Integer, primary_key=True, autoincrement=True)
         pool_contract = Column(String)
+        token0 = Column(String)
+        token1 = Column(String)
         timestamp = Column(Integer)
         price = Column(Float)
         price_upper = Column(Float)

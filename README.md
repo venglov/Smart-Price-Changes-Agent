@@ -1,11 +1,11 @@
-# **Smart Price Changes Agent**
+# **Smart Price Changes Agent - Rug Pulls**
 
 ---
 
 ## Description
 
 This agent monitors any critical price changes for all trading pools for all protocols that support the pool's
-Uniswap-like ABI (at least 500+ pools on one Ethereum network). The price in each pool is analyzed separately using
+Uniswap-like ABI (at least 3500+ pools on one Ethereum network). The price in each pool is analyzed separately using
 machine learning, namely the Prophet library. All information is stored in a local asynchronous database, which ensures
 the reliability of information storage in case of unexpected node failures.
 
