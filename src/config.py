@@ -3,9 +3,9 @@ debug_logs_enabled = True  # Print the debug logs
 history_capacity = 6300  # The amount of blocks to store in the database
 minimal_capacity_to_forecast = 20  # The minimal amount of swaps for the pool to start forecasting
 critical_enable = True  # Enables critical alerts
-high_enable = False  # Enables high alerts
-medium_enable = False  # Enables medium alerts
-low_enable = False  # Enables low alerts
+high_enable = True  # Enables high alerts
+medium_enable = True  # Enables medium alerts
+low_enable = True  # Enables low alerts
 
 #
 # All the information below is just used to make the alerts more informative. The agent can work without the information

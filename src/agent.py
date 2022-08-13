@@ -34,6 +34,9 @@ with open("./src/abi/meta_swap_abi.json", 'r') as meta_swap_abi_file:  # get abi
 with open("./src/abi/vyper_abi.json", 'r') as vyper_abi_file:  # get abi from the file
     vyper_abi = json.load(vyper_abi_file)
 
+with open("./src/abi/vyper0215_abi.json", 'r') as vyper0215_abi_file:  # get abi from the file
+    vyper0215_abi = json.load(vyper_abi_file)
+
 with open("./src/abi/token_abi.json", 'r') as abi_file:  # get abi from the file
     erc20_abi = json.load(abi_file)
 
@@ -41,6 +44,7 @@ swap_abi = next((x for x in pool_abi if x.get('name', "") == "Swap"), None)
 swap_v2_abi = next((x for x in pool_v2_abi if x.get('name', "") == "Swap"), None)
 token_swap_abi = next((x for x in meta_swap_abi if x.get('name', "") == "TokenSwap"), None)
 token_exchange_abi = next((x for x in vyper_abi if x.get('name', "") == "TokenExchange"), None)
+token_exchange0215_abi = next((x for x in vyper0215_abi if x.get('name', "") == "TokenExchange"), None)
 
 
 async def my_initialize(block_event: forta_agent.block_event.BlockEvent):
@@ -96,7 +100,8 @@ async def analyze_transaction(transaction_event: forta_agent.transaction_event.T
     for event in [*transaction_event.filter_log(json.dumps(swap_abi)),
                   *transaction_event.filter_log(json.dumps(swap_v2_abi)),
                   *transaction_event.filter_log(json.dumps(token_swap_abi)),
-                  *transaction_event.filter_log(json.dumps(token_exchange_abi))]:
+                  *transaction_event.filter_log(json.dumps(token_exchange_abi)),
+                  *transaction_event.filter_log(json.dumps(token_exchange0215_abi)), ]:
 
         if event.event == 'Swap':
 
@@ -196,7 +201,7 @@ async def analyze_transaction(transaction_event: forta_agent.transaction_event.T
                 known_pools = {**known_pools, **{event.address: 0}}
 
                 for i, token_1 in enumerate(tokens[:-1]):
-                    for token_2 in tokens[i+1:]:
+                    for token_2 in tokens[i + 1:]:
                         await pools.paste_row({'pool_contract': event.address, 'token0': token_1, 'token1': token_2})
 
             # get the amounts of the swap
