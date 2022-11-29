@@ -1,6 +1,6 @@
 test_mode = False  # The mode when the bot uses test database
 debug_logs_enabled = True  # Print the debug logs
-history_capacity = 6300  # The amount of blocks to store in the database
+history_capacity = 630000  # The amount of blocks to store in the database
 minimal_capacity_to_forecast = 20  # The minimal amount of swaps for the pool to start forecasting
 critical_enable = True  # Enables critical alerts
 high_enable = True  # Enables high alerts

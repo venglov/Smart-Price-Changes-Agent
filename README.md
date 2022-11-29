@@ -82,7 +82,7 @@ test_for_price_and_pool_returns_zero_or_one_finding_depending_on_the_seasonality
 
 Example of the alert:
 
-```json
+```
 1 findings for transaction 0xbfc18c36a4ee0d3f052c1d4a91ee9af03b3a72086f0f5f9516b94b8bda848688 {
   "name": "Critical Shina Inu/Wrapped Ether Price Changes in Uniswap",
   "description": "Price changes Shina Inu/Wrapped Ether in Uniswap is critically higher than excepted!",

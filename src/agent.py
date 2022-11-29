@@ -35,7 +35,7 @@ with open("./src/abi/vyper_abi.json", 'r') as vyper_abi_file:  # get abi from th
     vyper_abi = json.load(vyper_abi_file)
 
 with open("./src/abi/vyper0215_abi.json", 'r') as vyper0215_abi_file:  # get abi from the file
-    vyper0215_abi = json.load(vyper_abi_file)
+    vyper0215_abi = json.load(vyper0215_abi_file)
 
 with open("./src/abi/token_abi.json", 'r') as abi_file:  # get abi from the file
     erc20_abi = json.load(abi_file)
@@ -173,10 +173,14 @@ async def analyze_transaction(transaction_event: forta_agent.transaction_event.T
             token0_id = extract_argument(event, "soldId")
             token1_id = extract_argument(event, "boughtId")
 
-            token0 = pool_contract.functions.getToken(token0_id).call(
-                block_identifier=int(transaction_event.block_number))
-            token1 = pool_contract.functions.getToken(token1_id).call(
-                block_identifier=int(transaction_event.block_number))
+            try:
+
+                token0 = pool_contract.functions.getToken(token0_id).call(
+                    block_identifier=int(transaction_event.block_number))
+                token1 = pool_contract.functions.getToken(token1_id).call(
+                    block_identifier=int(transaction_event.block_number))
+            except Exception as _:
+                continue
 
         elif event.event == 'TokenExchange':
 
@@ -210,11 +214,14 @@ async def analyze_transaction(transaction_event: forta_agent.transaction_event.T
 
             token0_id = extract_argument(event, "sold_id")
             token1_id = extract_argument(event, "bought_id")
+            try:
+                token0 = pool_contract.functions.coins(token0_id).call(
+                    block_identifier=int(transaction_event.block_number))
+                token1 = pool_contract.functions.coins(token1_id).call(
+                    block_identifier=int(transaction_event.block_number))
+            except Exception as _:
+                continue
 
-            token0 = pool_contract.functions.coins(token0_id).call(
-                block_identifier=int(transaction_event.block_number))
-            token1 = pool_contract.functions.coins(token1_id).call(
-                block_identifier=int(transaction_event.block_number))
         else:
             continue
 
