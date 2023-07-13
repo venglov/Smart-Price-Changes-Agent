@@ -1,6 +1,6 @@
 {
-  "name": "smart-price-changes-agent",
-  "version": "2.3.0",
+  "name": "smart-price-changes-agent-rug-pulls",
+  "version": "1.2.1",
   "description": "This bot determines an abnormally price changes for the uniswap-like pools using ML.",
   "chainIds": [
     1
@@ -22,7 +22,7 @@
     "test": "python3 -m pytest"
   },
   "dependencies": {
-    "forta-agent": "^0.1.6"
+    "forta-agent": "^0.1.33"
   },
   "devDependencies": {
     "nodemon": "^2.0.8"

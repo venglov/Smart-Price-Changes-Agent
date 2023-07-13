@@ -1,11 +1,11 @@
-# **Smart Price Changes Agent**
+# **Smart Price Changes Agent - Rug Pulls**
 
 ---
 
 ## Description
 
 This agent monitors any critical price changes for all trading pools for all protocols that support the pool's
-Uniswap-like ABI (at least 500+ pools on one Ethereum network). The price in each pool is analyzed separately using
+Uniswap-like ABI (at least 3500+ pools on one Ethereum network). The price in each pool is analyzed separately using
 machine learning, namely the Prophet library. All information is stored in a local asynchronous database, which ensures
 the reliability of information storage in case of unexpected node failures.
 
@@ -82,7 +82,7 @@ test_for_price_and_pool_returns_zero_or_one_finding_depending_on_the_seasonality
 
 Example of the alert:
 
-```json
+```
 1 findings for transaction 0xbfc18c36a4ee0d3f052c1d4a91ee9af03b3a72086f0f5f9516b94b8bda848688 {
   "name": "Critical Shina Inu/Wrapped Ether Price Changes in Uniswap",
   "description": "Price changes Shina Inu/Wrapped Ether in Uniswap is critically higher than excepted!",
